@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Selenium WebDriver
+    implementation 'org.seleniumhq.selenium:selenium-java:4.21.0'
+
+    // WebDriverManager (auto setup driver)
+    implementation 'io.github.bonigarcia:webdrivermanager:5.9.2'
+
+    // TestNG
+    testImplementation 'org.testng:testng:7.10.2'
+
+    // REST Assured (API testing)
+    testImplementation 'io.rest-assured:rest-assured:5.4.0'
+
+    // Allure TestNG (reporting)
+    testImplementation 'io.qameta.allure:allure-testng:2.24.0'
+}
+
+test {
+    useTestNG() {
+        suites 'src/test/resources/suites/regression.xml'
+    }
+}
