@@ -8,28 +8,61 @@ import pages.ResetPasswordPage;
 public class ResetPasswordTest extends BaseTest {
 
     @Test
-    public void testValidResetRequest() {
-        driver.get("https://resonance.dibimbing.id/reset-password");
+    public void testEmptyEmail() {
+        pages.LoginPage loginPage = new pages.LoginPage(driver);
+        loginPage.clickLinkResetPassword();
         ResetPasswordPage resetPage = new ResetPasswordPage(driver);
-        resetPage.enterEmail("work.herupenyu@gmail.com");
-        resetPage.clickSendVerification();
 
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertTrue(resetPage.isVerificationToastVisible(),
-                "Toast sukses kirim verifikasi tidak muncul");
+        softAssert.assertTrue(resetPage.isOnResetPage(), "Tidak berada di halaman reset password");
+
+        resetPage.clickReset();
+
+        softAssert.assertTrue(resetPage.isToastVisible(), "Toast tidak muncul");
+
+        String toastMessage = resetPage.captureToastMessage();
+        System.out.println("Isi toast: " + toastMessage);
+
         softAssert.assertAll();
     }
 
     @Test
-    public void testInvalidResetRequest() {
-        driver.get("https://resonance.dibimbing.id/reset-password");
+    public void testInvalidEmail() {
+        pages.LoginPage loginPage = new pages.LoginPage(driver);
+        loginPage.clickLinkResetPassword();
         ResetPasswordPage resetPage = new ResetPasswordPage(driver);
-        resetPage.enterEmail(""); // kosong atau invalid
-        resetPage.clickSendVerification();
 
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertTrue(resetPage.isInvalidEmailToastVisible(),
-                "Toast error email tidak muncul");
+        softAssert.assertTrue(resetPage.isOnResetPage(), "Tidak berada di halaman reset password");
+
+        resetPage.enterEmail("invalid-email");
+        resetPage.clickReset();
+
+        softAssert.assertTrue(resetPage.isToastVisible(), "Toast tidak muncul");
+
+        String toastMessage = resetPage.captureToastMessage();
+        System.out.println("Isi toast: " + toastMessage);
+
+        softAssert.assertAll();
+    }
+
+    @Test
+    public void testResetSuccess() {
+        pages.LoginPage loginPage = new pages.LoginPage(driver);
+        loginPage.clickLinkResetPassword();
+        ResetPasswordPage resetPage = new ResetPasswordPage(driver);
+
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertTrue(resetPage.isOnResetPage(), "Tidak berada di halaman reset password");
+
+        resetPage.enterEmail("work.herupenyu@gmail.com");
+        resetPage.clickReset();
+
+        softAssert.assertTrue(resetPage.isToastVisible(), "Toast tidak muncul");
+
+        String toastMessage = resetPage.captureToastMessage();
+        System.out.println("Isi toast: " + toastMessage);
+
         softAssert.assertAll();
     }
 }

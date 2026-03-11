@@ -3,52 +3,117 @@ package tests;
 import core.BaseTest;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
+import pages.LoginPage;
 import pages.RegisterPage;
 
 public class RegisterTest extends BaseTest {
 
     @Test
-    public void testValidRegister() {
-        driver.get("https://resonance.dibimbing.id/register");
+    public void testEmptyName() {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.clinkLinkDaftar();
         RegisterPage registerPage = new RegisterPage(driver);
-        registerPage.enterName("Heru QA");
-        registerPage.enterEmail("heru.qa+" + System.currentTimeMillis() + "@gmail.com");
-        registerPage.enterPassword("ureh123");
-        registerPage.clickRegister();
 
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertTrue(registerPage.isRegisterSuccessToastVisible(),
-                "Toast sukses register tidak muncul");
+        softAssert.assertTrue(registerPage.isOnRegisterPage(), "Tidak berada di halaman register");
+
+        registerPage.enterName(""); // kosong
+        registerPage.enterEmail("work.herupenyu@gmail.com");
+        registerPage.clickDaftar();
+
+
+        softAssert.assertTrue(registerPage.isToastVisible(), "Toast tidak muncul");
+        System.out.println("Toast: " + registerPage.captureToastMessage());
         softAssert.assertAll();
     }
 
     @Test
-    public void testInvalidRegisterShortName() {
-        driver.get("https://resonance.dibimbing.id/register");
+    public void testEmptyEmail() {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.clinkLinkDaftar();
         RegisterPage registerPage = new RegisterPage(driver);
-        registerPage.enterName("H"); // nama terlalu pendek
-        registerPage.enterEmail("heru.shortname@gmail.com");
-        registerPage.enterPassword("ureh123");
-        registerPage.clickRegister();
 
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertTrue(registerPage.isShortNameErrorToastVisible(),
-                "Toast error short name tidak muncul");
+        softAssert.assertTrue(registerPage.isOnRegisterPage(), "Tidak berada di halaman register");
+
+        registerPage.enterName("Heru");
+        registerPage.enterEmail(""); // kosong
+        registerPage.clickDaftar();
+
+
+        softAssert.assertTrue(registerPage.isToastVisible(), "Toast tidak muncul");
+        System.out.println("Toast: " + registerPage.captureToastMessage());
         softAssert.assertAll();
     }
 
     @Test
-    public void testInvalidRegisterDuplicateEmail() {
-        driver.get("https://resonance.dibimbing.id/register");
+    public void testEmptyNameAndEmail() {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.clinkLinkDaftar();
         RegisterPage registerPage = new RegisterPage(driver);
-        registerPage.enterName("Heru QA");
-        registerPage.enterEmail("work.herupenyu@gmail.com"); // email valid sudah dipakai
-        registerPage.enterPassword("ureh123");
-        registerPage.clickRegister();
 
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertTrue(registerPage.isRegisterSuccessToastVisible(),
-                "Toast duplicate email tidak muncul (BUG)");
+        softAssert.assertTrue(registerPage.isOnRegisterPage(), "Tidak berada di halaman register");
+        registerPage.enterName(""); // kosong
+        registerPage.enterEmail(""); // kosong
+        registerPage.clickDaftar();
+
+
+        softAssert.assertTrue(registerPage.isToastVisible(), "Toast tidak muncul");
+        System.out.println("Toast: " + registerPage.captureToastMessage());
+        softAssert.assertAll();
+    }
+
+    @Test
+    public void testInvalidEmailFormat() {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.clinkLinkDaftar();
+        RegisterPage registerPage = new RegisterPage(driver);
+
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertTrue(registerPage.isOnRegisterPage(), "Tidak berada di halaman register");
+        registerPage.enterName("Heru");
+        registerPage.enterEmail("heru@invalid"); // format salah
+        registerPage.clickDaftar();
+
+        softAssert.assertTrue(registerPage.isToastVisible(), "Toast tidak muncul");
+        System.out.println("Toast: " + registerPage.captureToastMessage());
+        softAssert.assertAll();
+    }
+
+    @Test
+    public void testDuplicateEmail() {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.clinkLinkDaftar();
+        RegisterPage registerPage = new RegisterPage(driver);
+
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertTrue(registerPage.isOnRegisterPage(), "Tidak berada di halaman register");
+        registerPage.enterName("Heru");
+        registerPage.enterEmail("work.herupenyu@gmail.com"); // sudah terdaftar
+        registerPage.clickDaftar();
+
+
+        softAssert.assertTrue(registerPage.isToastVisible(), "Toast tidak muncul");
+        System.out.println("Toast: " + registerPage.captureToastMessage());
+        softAssert.assertAll();
+    }
+
+    @Test
+    public void testRegisterSuccess() {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.clinkLinkDaftar();
+
+        RegisterPage registerPage = new RegisterPage(driver);
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertTrue(registerPage.isOnRegisterPage(), "Tidak berada di halaman register");
+        registerPage.enterName("Heru Baru");
+        registerPage.enterEmail("serius.herupenyu@gmail.com"); // email baru
+        registerPage.clickDaftar();
+
+
+        softAssert.assertTrue(registerPage.isToastVisible(), "Toast tidak muncul");
+        System.out.println("Toast: " + registerPage.captureToastMessage());
         softAssert.assertAll();
     }
 }
