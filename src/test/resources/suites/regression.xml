@@ -20,4 +20,9 @@
         </classes>
     </test>
 
+    <listeners>
+        <listener class-name="core.TestListener"/>
+    </listeners>
+
+
 </suite>
