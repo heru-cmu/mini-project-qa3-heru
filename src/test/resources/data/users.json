@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Heru QA",
+    "email": "DYNAMIC_EMAIL",
+    "date": "AUTO_DATE",
+    "sendEmail": true,
+    "expectedStatus": 200
+  },
+  {
+    "name": "Invalid User",
+    "email": "invalid-email",
+    "date": "AUTO_DATE",
+    "sendEmail": false,
+    "expectedStatus": 400
+  },
+  {
+    "name": "Duplicate User",
+    "email": "DYNAMIC_EMAIL",
+    "date": "AUTO_DATE",
+    "sendEmail": false,
+    "expectedStatus": 409
+  }
+]

@@ -11,15 +11,24 @@ import java.nio.file.Paths;
 
 public class TestUtils {
 
-    public static void takeScreenshot(WebDriver driver, String testName) {
+    public static File takeScreenshot(WebDriver driver, String testName) {
+        File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         try {
-            File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-            String destPath = "screenshots/" + testName + ".png";
+            // pastikan folder screenshots ada
             Files.createDirectories(Paths.get("screenshots"));
-            Files.copy(srcFile.toPath(), Paths.get(destPath));
+
+            // buat nama file unik
+            String destPath = "screenshots/" + testName + "_" + System.currentTimeMillis() + ".png";
+            File destFile = new File(destPath);
+
+            // copy file screenshot ke lokasi tujuan
+            Files.copy(srcFile.toPath(), destFile.toPath());
+
             System.out.println("Screenshot saved: " + destPath);
+            return destFile; // return File supaya bisa di-attach ke Allure
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
     }
 

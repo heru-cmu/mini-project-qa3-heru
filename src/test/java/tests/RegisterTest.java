@@ -116,4 +116,6 @@ public class RegisterTest extends BaseTest {
         System.out.println("Toast: " + registerPage.captureToastMessage());
         softAssert.assertAll();
     }
+
+
 }

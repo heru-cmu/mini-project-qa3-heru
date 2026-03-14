@@ -65,4 +65,5 @@ public class ResetPasswordTest extends BaseTest {
 
         softAssert.assertAll();
     }
+
 }

@@ -1,0 +1,21 @@
+[
+  {
+    "usernameOrEmail": "work.herupenyu@gmail.com",
+    "password": "ureh",
+    "expectedStatus": 200
+  },
+  {
+    "usernameOrEmail": "work.herupenyu@gmail.com",
+    "password": "salah",
+    "expectedStatus": 401
+  },
+  {
+    "usernameOrEmail": "notexist@test.com",
+    "password": "ureh",
+    "expectedStatus": 401
+  },
+  {
+    "wrongField": "abc",
+    "expectedStatus": 400
+  }
+]

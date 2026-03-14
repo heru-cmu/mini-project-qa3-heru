@@ -8,34 +8,47 @@ repositories {
 }
 
 dependencies {
-    // Selenium WebDriver
-    implementation 'org.seleniumhq.selenium:selenium-java:4.21.0'
-
-    // WebDriverManager (auto setup driver)
-    implementation 'io.github.bonigarcia:webdrivermanager:5.9.2'
-
     // TestNG
-    testImplementation 'org.testng:testng:7.10.2'
+    testImplementation 'org.testng:testng:7.9.0'
 
-    // REST Assured (API testing)
+    // RestAssured untuk API test
     testImplementation 'io.rest-assured:rest-assured:5.4.0'
 
-    // Allure TestNG (reporting)
+    // Selenium untuk UI test
+    implementation 'org.seleniumhq.selenium:selenium-java:4.18.1'
+
+    // WebDriverManager untuk auto setup driver
+    implementation 'io.github.bonigarcia:webdrivermanager:5.9.2'
+
+    // Allure untuk reporting
     testImplementation 'io.qameta.allure:allure-testng:2.24.0'
 
-    // Log4j2
+    // Log4j core + API (sudah kamu pakai)
     implementation 'org.apache.logging.log4j:log4j-api:2.22.0'
     implementation 'org.apache.logging.log4j:log4j-core:2.22.0'
+
+// SLF4J binding ke Log4j
+    implementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.22.0'
+}
+
+allure {
+    version = "2.24.0"
+    autoconfigure = true
+    aspectjweaver = true
 }
 
 test {
     useTestNG() {
         suites 'src/test/resources/suites/regression.xml'
     }
+
+    testLogging {
+        events "passed", "failed", "skipped"
+        exceptionFormat "full"
+    }
+    finalizedBy 'allureReport' // Generate Allure report after tests
 }
 
-allure {
-    version = '2.24.0'
-    autoconfigure = true
-    aspectjweaver = true
+tasks.allureReport{
+    finalizedBy 'allureServe' // Serve Allure report after generation
 }
