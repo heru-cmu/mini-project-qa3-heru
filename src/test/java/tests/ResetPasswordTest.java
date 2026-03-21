@@ -18,11 +18,9 @@ public class ResetPasswordTest extends BaseTest {
 
         resetPage.clickReset();
 
-        softAssert.assertTrue(resetPage.isToastVisible(), "Toast tidak muncul");
-
         String toastMessage = resetPage.captureToastMessage();
-        System.out.println("Isi toast: " + toastMessage);
-
+        softAssert.assertTrue(resetPage.isToastVisible(), "Toast tidak muncul");
+        softAssert.assertEquals(toastMessage, "Email is required", "Pesan toast tidak sesuai");
         softAssert.assertAll();
     }
 
@@ -38,11 +36,9 @@ public class ResetPasswordTest extends BaseTest {
         resetPage.enterEmail("invalid-email");
         resetPage.clickReset();
 
-        softAssert.assertTrue(resetPage.isToastVisible(), "Toast tidak muncul");
-
         String toastMessage = resetPage.captureToastMessage();
-        System.out.println("Isi toast: " + toastMessage);
-
+        softAssert.assertTrue(resetPage.isToastVisible(), "Toast tidak muncul");
+        softAssert.assertEquals(toastMessage, "Invalid email format", "Pesan toast tidak sesuai");
         softAssert.assertAll();
     }
 
@@ -58,12 +54,9 @@ public class ResetPasswordTest extends BaseTest {
         resetPage.enterEmail("work.herupenyu@gmail.com");
         resetPage.clickReset();
 
-        softAssert.assertTrue(resetPage.isToastVisible(), "Toast tidak muncul");
-
         String toastMessage = resetPage.captureToastMessage();
-        System.out.println("Isi toast: " + toastMessage);
-
+        softAssert.assertTrue(resetPage.isToastVisible(), "Toast tidak muncul");
+        softAssert.assertEquals(toastMessage, "Email Verifikasi Terkirim!", "Pesan toast tidak sesuai");
         softAssert.assertAll();
     }
-
 }

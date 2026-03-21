@@ -1,6 +1,6 @@
 [
   {
-    "name": "Heru QA",
+    "name": "Heru Baru API",
     "email": "DYNAMIC_EMAIL",
     "date": "AUTO_DATE",
     "sendEmail": true,
@@ -14,10 +14,10 @@
     "expectedStatus": 400
   },
   {
-    "name": "Duplicate User",
+    "name": "Heru Baru API Duplicate",
     "email": "DYNAMIC_EMAIL",
     "date": "AUTO_DATE",
-    "sendEmail": false,
+    "sendEmail": true,
     "expectedStatus": 409
   }
 ]

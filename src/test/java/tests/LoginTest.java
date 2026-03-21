@@ -13,8 +13,10 @@ public class LoginTest extends BaseTest {
         loginPage.clickLogin();
 
         SoftAssert softAssert = new SoftAssert();
+        String toastMessage = loginPage.captureToastMessage();
+
         softAssert.assertTrue(loginPage.isToastVisible(), "Toast tidak muncul");
-        System.out.println("Toast message: " + loginPage.captureToastMessage());
+        softAssert.assertEquals(toastMessage, "Email and password are required", "Pesan toast tidak sesuai");
         softAssert.assertAll();
     }
 
@@ -25,8 +27,10 @@ public class LoginTest extends BaseTest {
         loginPage.clickLogin();
 
         SoftAssert softAssert = new SoftAssert();
+        String toastMessage = loginPage.captureToastMessage();
+
         softAssert.assertTrue(loginPage.isToastVisible(), "Toast tidak muncul");
-        System.out.println("Toast message: " + loginPage.captureToastMessage());
+        softAssert.assertEquals(toastMessage, "Email is required", "Pesan toast tidak sesuai");
         softAssert.assertAll();
     }
 
@@ -38,8 +42,10 @@ public class LoginTest extends BaseTest {
         loginPage.clickLogin();
 
         SoftAssert softAssert = new SoftAssert();
+        String toastMessage = loginPage.captureToastMessage();
+
         softAssert.assertTrue(loginPage.isToastVisible(), "Toast tidak muncul");
-        System.out.println("Toast message: " + loginPage.captureToastMessage());
+        softAssert.assertEquals(toastMessage, "Password is required", "Pesan toast tidak sesuai");
         softAssert.assertAll();
     }
 
@@ -51,8 +57,10 @@ public class LoginTest extends BaseTest {
         loginPage.clickLogin();
 
         SoftAssert softAssert = new SoftAssert();
+        String toastMessage = loginPage.captureToastMessage();
+
         softAssert.assertTrue(loginPage.isToastVisible(), "Toast tidak muncul");
-        System.out.println("Toast message: " + loginPage.captureToastMessage());
+        softAssert.assertEquals(toastMessage, "Invalid Credentials", "Pesan toast tidak sesuai");
         softAssert.assertAll();
     }
 
@@ -67,6 +75,4 @@ public class LoginTest extends BaseTest {
         softAssert.assertTrue(loginPage.isDashboardVisible(), "Dashboard tidak muncul setelah login");
         softAssert.assertAll();
     }
-
-
 }

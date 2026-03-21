@@ -21,7 +21,7 @@ public class UserDataProvider {
         );
 
         // Generate email unik sekali per run
-        String uniqueEmail = "heru.qa+" + System.currentTimeMillis() + "@test.com";
+        String uniqueEmail = "serius.herupenyu@gmail.com";
         String now = Instant.now().toString();
 
         // Replace placeholder di JSON

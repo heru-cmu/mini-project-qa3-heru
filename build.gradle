@@ -8,27 +8,30 @@ repositories {
 }
 
 dependencies {
-    // TestNG
+    // ✅ Test framework
     testImplementation 'org.testng:testng:7.9.0'
 
-    // RestAssured untuk API test
+    // ✅ API testing
     testImplementation 'io.rest-assured:rest-assured:5.4.0'
 
-    // Selenium untuk UI test
+    // ✅ UI testing
     implementation 'org.seleniumhq.selenium:selenium-java:4.18.1'
-
-    // WebDriverManager untuk auto setup driver
     implementation 'io.github.bonigarcia:webdrivermanager:5.9.2'
 
-    // Allure untuk reporting
+    // ✅ Reporting
     testImplementation 'io.qameta.allure:allure-testng:2.24.0'
+    testImplementation 'io.qameta.allure:allure-java-commons:2.24.0'
 
-    // Log4j core + API (sudah kamu pakai)
+    // ✅ Logging
     implementation 'org.apache.logging.log4j:log4j-api:2.22.0'
     implementation 'org.apache.logging.log4j:log4j-core:2.22.0'
-
-// SLF4J binding ke Log4j
     implementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.22.0'
+
+    // ✅ JSON parsing (dipakai di DataProvider, UserReader, UserUtils)
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.0'
+
+    // ✅ Assertion library (dipakai di API test)
+    testImplementation 'org.hamcrest:hamcrest:2.2'
 }
 
 allure {
@@ -49,6 +52,6 @@ test {
     finalizedBy 'allureReport' // Generate Allure report after tests
 }
 
-tasks.allureReport{
+tasks.allureReport {
     finalizedBy 'allureServe' // Serve Allure report after generation
 }

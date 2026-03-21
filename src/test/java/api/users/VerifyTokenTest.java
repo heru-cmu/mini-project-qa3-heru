@@ -7,6 +7,7 @@ import org.testng.annotations.Test;
 import java.util.HashMap;
 import java.util.Map;
 import api.utils.TokenManager;
+import io.qameta.allure.Allure;
 
 import static io.restassured.RestAssured.given;
 
@@ -18,9 +19,11 @@ public class VerifyTokenTest {
         String verificationToken = TokenManager.getVerificationToken();
 
         if (verificationToken == null) {
-            System.out.println("SKIPPED: Tidak ada akses ke token verifikasi (token dikirim via email).");
-            Reporter.log("SKIPPED: Test VerifyToken dilewati karena token verifikasi tidak tersedia (email tidak diakses).");
-            throw new SkipException("Skip VerifyTokenTest: token verifikasi tidak tersedia.");
+            String skipMessage = "SKIPPED: Token verifikasi tidak tersedia (email tidak diakses).";
+            System.out.println(skipMessage);
+            Reporter.log(skipMessage);
+            Allure.addAttachment("Skip Evidence", skipMessage);
+            throw new SkipException(skipMessage);
         }
 
         // Data request pakai token verifikasi asli
@@ -47,6 +50,9 @@ public class VerifyTokenTest {
         // simpan evidence ke TestNG Reporter
         Reporter.getCurrentTestResult().setAttribute("statusCode", response.getStatusCode());
         Reporter.getCurrentTestResult().setAttribute("response", response.getBody().asString());
+
+        // attach response ke Allure
+        Allure.addAttachment("VerifyToken Response", response.asPrettyString());
 
         response.then().statusCode(200);
     }

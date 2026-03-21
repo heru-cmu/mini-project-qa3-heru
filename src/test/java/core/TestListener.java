@@ -12,7 +12,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import api.utils.TokenManager; // tambahin import ini
+import api.utils.TokenManager;
 
 public class TestListener implements ITestListener {
     private static final Logger logger = LogManager.getLogger(TestListener.class);
@@ -26,8 +26,6 @@ public class TestListener implements ITestListener {
     public void onTestSuccess(ITestResult result) {
         logger.info("=== PASSED TEST: " + result.getName() + " ===");
         attachResponseEvidence(result);
-
-        // log token setiap kali test sukses
         logTokenStatus(result);
     }
 
@@ -35,8 +33,6 @@ public class TestListener implements ITestListener {
     public void onTestFailure(ITestResult result) {
         logger.error("=== FAILED TEST: " + result.getName() + " ===");
         attachResponseEvidence(result);
-
-        // log token juga walau gagal
         logTokenStatus(result);
 
         // Attach UI evidence (screenshot) kalau driver aktif
@@ -49,17 +45,18 @@ public class TestListener implements ITestListener {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            } else {
-                logger.warn("Screenshot file is null, cannot attach.");
             }
-        } else {
-            logger.warn("No WebDriver instance found, skipping screenshot.");
         }
     }
 
     @Override
     public void onTestSkipped(ITestResult result) {
         logger.warn("=== SKIPPED TEST: " + result.getName() + " ===");
+        attachResponseEvidence(result);
+
+        // Tambahkan skip evidence ke Allure
+        String skipMessage = "Test skipped: " + result.getName();
+        Allure.addAttachment("Skip Evidence", skipMessage);
     }
 
     @Override
@@ -75,6 +72,7 @@ public class TestListener implements ITestListener {
     private void attachResponseEvidence(ITestResult result) {
         Object statusCodeObj = result.getAttribute("statusCode");
         Object responseObj = result.getAttribute("response");
+        Object bugNoteObj = result.getAttribute("bugNote");
 
         if (statusCodeObj != null) {
             Allure.addAttachment("Status Code", statusCodeObj.toString());
@@ -84,6 +82,10 @@ public class TestListener implements ITestListener {
             String body = responseObj.toString();
             String limitedBody = body.length() > 500 ? body.substring(0, 500) + "..." : body;
             Allure.addAttachment("Response Body (limited)", limitedBody);
+        }
+
+        if (bugNoteObj != null) {
+            Allure.addAttachment("Bug Note", bugNoteObj.toString());
         }
     }
 
